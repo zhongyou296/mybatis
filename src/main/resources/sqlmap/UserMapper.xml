@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wqm.mybatis.dao.UserDAO">
+    <resultMap id="BaseResultMap" type="com.wqm.mybatis.model.UserDO">
+        <result column="id" property="id" jdbcType="INTEGER"/>
+        <result column="username" property="username" jdbcType="VARCHAR"/>
+        <result column="loginname" property="loginname" jdbcType="VARCHAR"/>
+        <result column="password" property="password" jdbcType="VARCHAR"/>
+        <result column="phone" property="phone" jdbcType="VARCHAR"/>
+        <result column="address" property="address" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,username,loginname,password,phone,address
+    </sql>
+
+    <insert id="save" parameterType="com.wqm.mybatis.model.UserDO" useGeneratedKeys="true" keyProperty="id">
+        insert into user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="username != null">
+                username,
+            </if>
+            <if test="loginname != null">
+                loginname,
+            </if>
+            <if test="password != null">
+                password,
+            </if>
+            <if test="phone != null">
+                phone,
+            </if>
+            <if test="address != null">
+                address,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="username != null">
+                #{username},
+            </if>
+            <if test="loginname != null">
+                #{loginname},
+            </if>
+            <if test="password != null">
+                #{password},
+            </if>
+            <if test="phone != null">
+                #{phone},
+            </if>
+            <if test="address != null">
+                #{address},
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="remove" parameterType="userDO">
+        delete from user where id = #{id}
+    </delete>
+
+    <update id="update" parameterType="userDO" useGeneratedKeys="true" keyProperty="id">
+        update user
+        <set>
+            <if test="username != null">
+                username = #{username},
+            </if>
+            <if test="loginname != null">
+                loginname = #{loginname},
+            </if>
+            <if test="password != null">
+                password = #{password},
+            </if>
+            <if test="phone != null">
+                phone = #{phone},
+            </if>
+            <if test="address != null">
+                address = #{address},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <select id="query" parameterType="userQueryDO" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from user
+        <trim prefix="where" prefixOverrides="AND |OR" suffixOverrides=",">
+            <if test="id != null">
+                id = #{id},
+            </if>
+            <if test="username != null">
+                and username = #{username},
+            </if>
+            <if test="loginname != null">
+                and loginname = #{loginname},
+            </if>
+            <if test="phone != null">
+                and phone = #{phone},
+            </if>
+        </trim>
+    </select>
+
+    <select id="queryCount" parameterType="userQueryDO" resultType="int">
+        select count(*) from user
+        <trim prefix="where" prefixOverrides="AND |OR" suffixOverrides=",">
+            <if test="id != null">
+                id = #{id},
+            </if>
+            <if test="username != null">
+                and username = #{username},
+            </if>
+            <if test="loginname != null">
+                and loginname = #{loginname},
+            </if>
+            <if test="phone != null">
+                and phone = #{phone},
+            </if>
+        </trim>
+    </select>
+
+    <select id="get" parameterType="int" resultMap="BaseResultMap">
+        select * from user where id = #{id}
+    </select>
+</mapper>
